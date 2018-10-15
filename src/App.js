@@ -12,6 +12,11 @@ class App extends Component {
     user: ''
   }
 
+  loginHandler = () => {
+    if (window.confirm('Do you want to login?'))
+      this.setState({ user: 'Darling' })
+  }
+
   render() {
     return (
       <div className="App">
@@ -19,8 +24,8 @@ class App extends Component {
         <main className='App-main'>
           {
             this.state.user ?
-              <Dashboard user={this.state.user}/> :
-              <Auth />
+              <Dashboard user={this.state.user} /> :
+              <Auth loginHandler={this.loginHandler} />
           }
         </main>
         <Footer />

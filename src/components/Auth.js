@@ -2,7 +2,7 @@ import React from 'react'
 // ui
 import {auth as style} from '../ui/styles'
 
-const Auth = () => (
+const Auth = ({ loginHandler }) => (
   <div
     style={style.authWrapper}
   >
@@ -15,10 +15,7 @@ const Auth = () => (
       {'Just log in with your Spotify account to start using the app'}
     </h2>
     <button
-      onClick={() => {
-        if (window.confirm('Do you want to login?'))
-          this.setState({ user: 'Darling' })
-      }}
+      onClick={loginHandler}
       style={style.loginButton}
       value={'login-true'}
     >
