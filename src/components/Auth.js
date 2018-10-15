@@ -1,10 +1,9 @@
 import React from 'react'
-// ui
 import {auth as style} from '../ui/styles'
 
 const Auth = ({ loginHandler }) => (
   <div
-    style={style.authWrapper}
+    style={style.wrapper}
   >
     <h1
       style={style.header}

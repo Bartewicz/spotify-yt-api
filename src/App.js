@@ -9,18 +9,16 @@ import './App.css'
 // utils
 import queryString from 'query-string'
 
-const BASE_URL = `https://api.spotify.com/v1`
-
 class App extends Component {
   state = {
-    user: {},
+    user: '',
     access_token: ''
   }
 
   componentDidMount() {
     const params = queryString.parse(window.location.search)
     this.setState({ access_token: params.access_token },
-      () => fetch(`${BASE_URL}/me`, {
+      () => fetch(`https://api.spotify.com/v1/me`, {
         headers: {
           'Authorization': `Bearer ${this.state.access_token}`
         }
@@ -45,7 +43,12 @@ class App extends Component {
         <main className='App-main'>
           {
             this.state.access_token ?
-              <Dashboard user={this.state.user} /> :
+              this.state.user ?
+                <Dashboard
+                  user={this.state.user}
+                  accessToken={this.state.access_token}
+                /> :
+                'Loading...' :
               <Auth loginHandler={this.loginHandler} />
           }
         </main>
