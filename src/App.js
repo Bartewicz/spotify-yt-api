@@ -6,16 +6,37 @@ import Footer from './components/Footer'
 import Header from './components/Header'
 // UI
 import './App.css'
+// utils
+import queryString from 'query-string'
+
+const BASE_URL = `https://api.spotify.com/v1`
 
 class App extends Component {
   state = {
-    user: ''
+    user: {},
+    access_token: ''
   }
 
-  loginHandler = () => {
-    if (window.confirm('Do you want to login?'))
-      this.setState({ user: 'Darling' })
+  componentDidMount() {
+    const params = queryString.parse(window.location.search)
+    this.setState({ access_token: params.access_token },
+      () => fetch(`${BASE_URL}/me`, {
+        headers: {
+          'Authorization': `Bearer ${this.state.access_token}`
+        }
+      }).then(
+        response => response.json()
+      ).then(
+        user => {
+          this.setState({ user })
+        }
+      ).catch(
+        error => console.log(error)
+      )
+    )
   }
+
+  loginHandler = () => window.location = 'http://localhost:8888/login'
 
   render() {
     return (
@@ -23,7 +44,7 @@ class App extends Component {
         <Header />
         <main className='App-main'>
           {
-            this.state.user ?
+            this.state.access_token ?
               <Dashboard user={this.state.user} /> :
               <Auth loginHandler={this.loginHandler} />
           }
