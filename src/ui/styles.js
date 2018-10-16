@@ -60,7 +60,7 @@ export const playlistCard = {
   },
   titleWrapper: {
     display: 'flex',
-    flexGrow: 1,
+    flexGrow: '1',
     alignItems: 'center',
     marginBottom: '15px'
   },
