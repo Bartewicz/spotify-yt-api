@@ -42,7 +42,9 @@ class App extends Component {
             />
             <Route exact path={'/dashboard'}
               component={() => (
-                <Dashboard accessToken={this.state.access_token} />
+                <Dashboard
+                  accessToken={this.state.access_token}
+                />
               )}
             />
           </main>

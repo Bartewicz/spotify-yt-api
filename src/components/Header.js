@@ -1,9 +1,11 @@
 import React from 'react'
-import logo from '../parrot.svg'
+import logo from '../img/parrot.svg'
 
 const Header = () => (
   <header className="App-header">
-    <img src={logo} className="App-logo" alt="logo" />
+    <img className="App-logo"
+      src={logo}
+      alt="logo" />
     <p>
       {'Playlist parrot'}
     </p>

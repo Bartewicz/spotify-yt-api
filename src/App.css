@@ -8,12 +8,10 @@
 .App-header {
   background-color: #102433;
   height: 100px;
-  width: 100%;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
   font-size: 2rem;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.5);
@@ -30,7 +28,7 @@
   display: flex;
   flex-direction: column;
   flex-grow: 1;
-  padding: 20px;
+  padding: 0 20px 20px 20px;
   box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.5);
   -webkit-box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.5);
@@ -38,15 +36,14 @@
 
 .App-footer {
   background-color: #102433;
-  min-height: 100px;
-  width: 100%;
-  bottom: 0;
-  box-sizing: border-box;
-  display: flex;
-  flex-flow: column;
-  justify-content: space-around;
   padding: 20px;
   color: #888888;
+}
+
+.footer-wrapper>p {
+  width: 100%;
+  color: #fff;
+  margin: 0 0 8px 0;
 }
 
 .text-center {
