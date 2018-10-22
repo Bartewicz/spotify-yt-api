@@ -50,6 +50,28 @@ export const dashboard = {
   }
 }
 
+export const youTubeAuth = {
+  userName: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    alignItems: 'center'
+  },
+  icon: {
+    display: 'inline',
+    height: '16px',
+    marginRight: '5px'
+  },
+  btn: {
+    cursor: 'pointer',
+    padding: '10px',
+    borderRadius: '10px',
+    border: 0,
+    backgroundColor: '#f00',
+    color: '#fff',
+    fontWeight: 'bold'
+  }
+}
+
 export const playlistCard = {
   wrapper: {
     backgroundColor: '#102433',

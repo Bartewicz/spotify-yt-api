@@ -2,6 +2,7 @@ import React from 'react'
 import PlaylistCard from './PlaylistCard'
 import ActivePlaylistCard from './ActivePlaylistCard'
 import { dashboard as style } from '../ui/styles'
+import YouTubeConnect from './YouTubeAuth';
 
 class Dashboard extends React.Component {
   state = {
@@ -37,14 +38,14 @@ class Dashboard extends React.Component {
   }
   
   playlistOverview = (key) => {
-    if (key !== this.state.activeCard) {
+    if (key) {
       this.setState({ activeCard: key })
       setTimeout(() => {
         const active = document.querySelector('.active')
         const standardPlaylists = document.querySelectorAll('.standard')
         standardPlaylists.forEach(card => card.style.display = 'none')
         active.style.opacity = 1
-      }, 300)
+      }, 150)
     } else {
       const active = document.querySelector('.active')
       active.style.opacity = 0
@@ -53,7 +54,7 @@ class Dashboard extends React.Component {
       const standardPlaylists = document.querySelectorAll('.standard')
       standardPlaylists.forEach(card => card.style.display = 'flex')
       
-      setTimeout(() => this.setState({ activeCard: null }), 150)
+      setTimeout(() => this.setState({ activeCard: null }), 450)
     }
   }
   
@@ -74,6 +75,7 @@ class Dashboard extends React.Component {
                   src={this.state.user.images[0].url}
                   alt={"user's avatar"} />
               </div>
+              <YouTubeConnect />
               <h2 className={'text-center'}>
                 {'Manage your Spotify playlists:'}
               </h2>

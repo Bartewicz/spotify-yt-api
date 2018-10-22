@@ -17,9 +17,7 @@ class ActivePlaylistCard extends React.Component {
         }
       }).then(response => response.json())
       .then(tracksData => {
-        // const tracks = tracksData.items.map(trackData => trackData.track)
         this.setState({ tracksData })
-        console.log(tracksData)
       })
       .then(() => {
         const playlistList = document.querySelector('.playlist-list')
@@ -60,7 +58,7 @@ class ActivePlaylistCard extends React.Component {
             {this.props.playlist.name}
           </h3>
           <img style={style.closeButton}
-            onClick={() => this.props.playlistOverview(this.props.index)}
+            onClick={() => this.props.playlistOverview()}
             src={closeButton}
             alt={'icon more'} />
         </div>
@@ -105,7 +103,11 @@ class ActivePlaylistCard extends React.Component {
             <button style={style.expandButton}
               onClick={() => this.expandFullTrackList(!this.state.isFullListVisible)}
             >
-              {'See all...'}
+              {
+                !this.state.isFullListVisible ?
+              'See all...' :
+              'Hide...'
+              }
             </button>
           </div>
           <div style={style.detailsSection}>
@@ -155,7 +157,7 @@ class ActivePlaylistCard extends React.Component {
                 </ol>
               </div>
               :
-              'Loading...'
+              null
           }
         </div>
       </div>
