@@ -21,7 +21,6 @@ export const auth = {
 
 export const dashboard = {
   wrapper: {
-    position: 'relative',
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
@@ -40,12 +39,10 @@ export const dashboard = {
     objectFit: 'cover'
   },
   playlistsWrapper: {
-    position: 'relative',
     display: 'flex',
     flexFlow: 'row wrap',
     flexGrow: 1,
     justifyContent: 'center',
-    width: '100%',
     transition: 'height 0.3s ease-in-out 0.15s'
   }
 }
@@ -79,12 +76,13 @@ export const playlistCard = {
     flexFlow: 'column nowrap',
     justifyContent: 'center',
     alignItems: 'center',
+    opacity: 1,
     width: '240px',
     boxSizing: 'border-box',
     margin: '10px',
     padding: '15px 20px',
     borderRadius: '20px',
-    transition: '0.15s all ease-in-out 0'
+    transition: 'opacity 0.15s ease-in-out'
   },
   titleWrapper: {
     display: 'flex',
@@ -129,34 +127,31 @@ export const playlistCard = {
 
 export const activePlaylistCard = {
   wrapper: {
-    position: 'absolute',
     opacity: 0,
     backgroundColor: '#102433',
     boxSizing: 'border-box',
     display: 'flex',
     flexFlow: 'column nowrap',
-    flexGrow: 1,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: '100%',
     minWidth: '260px',
     maxWidth: '1000px',
-    marginTop: '10px',
+    marginBottom: '36px',
     padding: '20px',
     borderRadius: '20px',
     color: '#888888',
-    transition: 'opacity 0.3s ease-in-out 0.15s'
+    transition: 'opacity 0.3s ease-in-out'
   },
   titleWrapper: {
     display: 'flex',
-    width: '100%',
-    alignItems: 'center',
+    justifyContent: 'space-between',
     marginBottom: '15px'
   },
   title: {
     width: '100%',
-    fontSize: '1rem',
     color: 'white',
+    fontSize: '1rem',
     textAlign: 'center'
   },
   closeButton: {
@@ -186,7 +181,8 @@ export const activePlaylistCard = {
   detailsSection: {
     display: 'flex',
     flexFlow: 'column nowrap',
-    alignSelf: 'flex-start'
+    alignSelf: 'flex-start',
+    marginLeft: '20px'
   },
   sectionTitle: {
     marginBottom: 0
@@ -215,17 +211,13 @@ export const activePlaylistCard = {
   tracksCounter: {
     marginLeft: '10px',
     color: 'white',
-    fontWeight: 'bold',
-    fontSize: '1.20rem'
+    fontWeight: 'bold'
   },
   playlistHolder: {
-    visibility: 'hidden',
+    height: 0,
     overflow: 'hidden'
   },
-  playlistListHidden: {
-    transition: 'margin-top 0.3s ease-in-out 0.15s'
-  },
-  playlistListVisible: {
-    marginTop: 0
+  playlistList: {
+    transition: 'margin-top 0.3s ease-in-out'
   }
 }

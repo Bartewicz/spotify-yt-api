@@ -1,17 +1,19 @@
 import React from 'react'
-import PlaylistCard from './PlaylistCard'
-import ActivePlaylistCard from './ActivePlaylistCard'
-import { dashboard as style } from '../ui/styles'
-import YouTubeConnect from './YouTubeAuth';
+import YouTubeConnect from '../YouTubeAuth'
+import PlaylistCard from '../PlaylistCard'
+import StandalonePlaylistOverview from '../StandalonePlaylistOverview'
+import { dashboard as style } from '../../ui/styles'
+import Spinner from '../Spinner';
 
 class Dashboard extends React.Component {
   state = {
     activeCard: null,
     user: '',
-    playlists: ''
+    playlists: null
   }
 
   componentDidMount() {
+    // obtain user and user's playlist data
     fetch(`https://api.spotify.com/v1/me`, {
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`
@@ -23,7 +25,6 @@ class Dashboard extends React.Component {
     ).catch(
       error => console.log(error)
     )
-
     fetch(`https://api.spotify.com/v1/me/playlists`, {
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`
@@ -36,37 +37,43 @@ class Dashboard extends React.Component {
       error => console.log(error)
     )
   }
-  
+
   playlistOverview = (key) => {
-    if (key) {
-      this.setState({ activeCard: key })
+    // check if key is number from card or null from active
+    if (typeof key === 'number') {
+      const standardPlaylists = document.querySelectorAll('.standard')
+      standardPlaylists.forEach(card => {
+        card.style.opacity = 0
+      })
       setTimeout(() => {
-        const active = document.querySelector('.active')
-        const standardPlaylists = document.querySelectorAll('.standard')
-        standardPlaylists.forEach(card => card.style.display = 'none')
-        active.style.opacity = 1
+        standardPlaylists.forEach(card =>
+          card.style.display = 'none'
+        )
+        this.setState({ activeCard: key })
       }, 150)
     } else {
       const active = document.querySelector('.active')
       active.style.opacity = 0
-      const playlistWrapper = document.querySelector('.playlists-wrapper')
-      playlistWrapper.style.height = 'auto'
-      const standardPlaylists = document.querySelectorAll('.standard')
-      standardPlaylists.forEach(card => card.style.display = 'flex')
-      
-      setTimeout(() => this.setState({ activeCard: null }), 450)
+      setTimeout(() =>
+        this.setState({ activeCard: null }, () => {
+          const standardPlaylists = document.querySelectorAll('.standard')
+          standardPlaylists.forEach(card => {
+            card.style.display = 'flex'
+            setTimeout(() => card.style.opacity = 1, 200)
+          })
+        }), 300)
     }
   }
-  
+
   render() {
     return (
       <div>
         {
-          !this.state.user ?
-          <div className={'text-center'}>
-              {'Loading...'}
-            </div> :
-            <div style={style.wrapper}>
+          !this.state.user
+            ? <div className="spinner-wrapper">
+              <Spinner />
+            </div>
+            : <div style={style.wrapper}>
               <h1 className={'text-center'}>
                 {`Welcome, ${this.state.user.display_name}`}
               </h1>
@@ -83,27 +90,29 @@ class Dashboard extends React.Component {
                 className={'playlists-wrapper'}
               >
                 {
-                  this.state.playlists ?
-                    this.state.playlists.items.length ?
-                      this.state.playlists.items.map((playlist, i) =>
-                        this.state.activeCard !== i ?
-                          <PlaylistCard key={i}
-                            active={this.state.activeCard}
-                            playlist={playlist}
-                            playlistOverview={this.playlistOverview}
-                            index={i}
-                          /> :
-                          <ActivePlaylistCard key={i}
+                  this.state.playlists
+                    ? this.state.playlists.hasOwnProperty('items')
+                      ? typeof this.state.activeCard === 'number'
+                        ? this.state.playlists.items.filter((playlist, i) =>
+                          this.state.activeCard === i
+                        ).map((playlist, i) =>
+                          <StandalonePlaylistOverview key={i}
                             active={this.state.activeCard}
                             accessToken={this.props.accessToken}
                             playlist={playlist}
                             playlistOverview={this.playlistOverview}
                             index={i}
                           />
-                      ) :
-                      'You have no playlists yet. Nothing to do here...'
-                    :
-                    'Loading...'
+                        )
+                        : this.state.playlists.items.map((playlist, i) =>
+                          <PlaylistCard key={i}
+                            playlist={playlist}
+                            playlistOverview={this.playlistOverview}
+                            index={i}
+                          />
+                        )
+                      : 'You have no playlists yet. Nothing to do here...'
+                    : <Spinner />
                 }
               </div>
             </div>

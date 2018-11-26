@@ -58,58 +58,6 @@ const Footer = () => (
           {'CC 3.0 BY'}
         </a>
       </div>
-      <div>
-        {'Icon More made by '}
-        <a className={'link'}
-          href="https://www.flaticon.com/authors/smashicons"
-          title="Smashicons"
-          target="_blank"
-          rel="noopener noreferrer">
-          {'Smashicons'}
-        </a>
-        {' from '}
-        <a className={'link'}
-          href="https://www.flaticon.com/"
-          title="Flaticon"
-          target="_blank"
-          rel="noopener noreferrer">
-          {'flaticon'}
-        </a>
-        {' is licensed by '}
-        <a className={'link'}
-          href="http://creativecommons.org/licenses/by/3.0/"
-          title="Creative Commons BY 3.0"
-          target="_blank"
-          rel="noopener noreferrer">
-          {'CC 3.0 BY'}
-        </a>
-      </div>
-      <div>
-        {'Icon Close made by '}
-        <a className={'link'}
-          href="https://www.flaticon.com/authors/egor-rumyantsev"
-          title="Egor Rumyantsev"
-          target="_blank"
-          rel="noopener noreferrer">
-          {'Egor Rumyantsev'}
-        </a>
-        {' from '}
-        <a className={'link'}
-          href="https://www.flaticon.com/"
-          title="Flaticon"
-          target="_blank"
-          rel="noopener noreferrer">
-          {'flaticon'}
-        </a>
-        {' is licensed by '}
-        <a className={'link'}
-          href="http://creativecommons.org/licenses/by/3.0/"
-          title="Creative Commons BY 3.0"
-          target="_blank"
-          rel="noopener noreferrer">
-          {'CC 3.0 BY'}
-        </a>
-      </div>
     </div>
   </div>
 )
