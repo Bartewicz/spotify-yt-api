@@ -1,10 +1,10 @@
-import React from 'react'
+import React from "react";
 
 const Spinner = () => (
-    <div className="spinner">
-      <div className="clock__face"></div>
-      <div className="clock__arm"></div>
-    </div>
-)
+  <div className="spinner">
+    <div className="clock__face" />
+    <div className="clock__arm" />
+  </div>
+);
 
-export default Spinner
+export default Spinner;
