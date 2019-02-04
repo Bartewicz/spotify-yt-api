@@ -239,33 +239,58 @@ export const activePlaylistCard = {
     color: "#CCC",
     cursor: "pointer",
   },
-  table: {
-    main: {
-      borderCollapse: "collapse",
-    },
-    row: {
-      borderBottom: "1px solid white",
-    },
-    cell: {
-      padding: "5px 5px 0 5px",
-      textAlign: "center",
-      wordWrap: "all",
-    },
-    title: {
-      color: "white",
-      textAlign: "left",
-      maxWidth: 480,
-    },
-    time: {
-      width: "50px",
-      color: "white",
-    },
-    ellipsis: {
-      marginBlockStart: 0,
-      marginBlockEnd: 0,
-      whiteSpace: "nowrap",
-      textOverflow: "ellipsis",
-      overflow: "hidden",
-    },
+  tableRow: {
+    display: "flex",
+    flexDirection: "row",
+    flexGrow: 1,
+    padding: "5px",
+    boxSizing: "border-box",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.5)",
+  },
+  tableCell: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    color: "white",
+    wordWrap: "all",
+  },
+  position: {
+    width: 20,
+  },
+  trackTitle: {
+    flex: 3,
+  },
+  responseTitleSection: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    fontSize: "0.8rem",
+    color: "#888",
+    paddingTop: 2,
+    paddingRight: 5,
+    paddingLeft: 5,
+  },
+  responseTitle: {
+    fontSize: "0.9rem",
+    color: "#CCC",
+    fontWeight: "normal",
+  },
+  artist: {
+    flex: 1,
+  },
+  time: {
+    width: 70,
+  },
+  cover: {
+    width: 130,
+  },
+  attach: {
+    width: 60,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
   },
 };

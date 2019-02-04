@@ -40,8 +40,9 @@ class StandalonePlaylist extends React.Component {
       .catch((error) => console.log(error));
   }
 
-  componentDidUpdate = (prevProps, prevState) => {
-    if (this.state.tracksData.length === this.state.total) {
+  componentDidUpdate = () => {
+    const {tracksData, total} = this.state;
+    if (tracksData.length === total) {
       Promise.all([
         window.gapi.load("client", function() {
           window.gapi.client.init({

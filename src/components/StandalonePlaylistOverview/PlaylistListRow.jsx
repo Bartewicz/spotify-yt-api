@@ -41,84 +41,77 @@ export default class PlaylistListRow extends Component {
   };
 
   render() {
-    const { index, track, response, showTooltip, hideTooltip } = this.props;
+    const { index, track, response } = this.props;
     const { active } = this.state;
+    const {
+      tableRow,
+      tableCell,
+      position,
+      trackTitle,
+      paginationButton,
+      responseTitleSection,
+      responseTitle,
+      artist,
+      time,
+      cover,
+      attach,
+      checkbox,
+    } = style;
 
     return (
-      <tr style={style.table.row}>
-        <td style={style.table.cell}>
+      <div style={tableRow}>
+        <div style={{ ...tableCell, ...position }}>
           <p>{index + 1}</p>
-        </td>
-        <td style={{ ...style.table.cell, ...style.table.title }}>
-          <p style={style.table.ellipsis}>{track.name}</p>
+        </div>
+        <div style={{ ...tableCell, ...trackTitle }}>
+          {track.name}
           {Array.isArray(response) && (
             <div
               style={{
                 display: "flex",
-                maxWidth: "90%",
                 justifyContent: "space-between",
+                width: "95%",
                 marginTop: 7,
               }}
             >
-              <button style={style.paginationButton} onClick={this.handlePrev}>
+              <button style={paginationButton} onClick={this.handlePrev}>
                 {"<"}
               </button>
-              <div
-                style={{
-                  display: "flex",
-                  flexGrow: 0,
-                  flexDirection: "column",
-                  alignItems: "center",
-                  fontSize: "0.8rem",
-                  color: "#888",
-                }}
-              >
+              <div style={responseTitleSection}>
                 <b>found: </b>
-                <em
-                  style={{
-                    ...style.table.ellipsis,
-                    fontSize: "0.9rem",
-                    color: "#CCC",
-                    fontWeight: "normal",
-                    maxWidth: "440px",
-                    boxSizing: "border-box",
-                    marginTop: 2,
-                    paddingRight: 5,
-                    paddingLeft: 5,
-                  }}
-                >
-                  {response[active].snippet.title}
-                </em>
+                <em style={responseTitle}>{response[active].snippet.title}</em>
               </div>
-              <button style={style.paginationButton} onClick={this.handleNext}>
+              <button style={paginationButton} onClick={this.handleNext}>
                 {">"}
               </button>
             </div>
           )}
-        </td>
-        <td style={style.table.cell}>
-          <p style={style.table.ellipsis}>{track.artists[0].name}</p>
-        </td>
-        <td style={{ ...style.table.cell, ...style.table.time }}>
+        </div>
+        <div style={{ ...tableCell, ...artist }}>
+          <p>{track.artists[0].name}</p>
+        </div>
+        <div style={{ ...tableCell, ...time }}>
           {moment(track.duration_ms).format("m:ss")}
-        </td>
+        </div>
         {Array.isArray(response) && (
-          <td style={{ ...style.table.cell, width: 120 }}>
+          <div style={{ ...tableCell, ...cover }}>
             <img
               src={response[active].snippet.thumbnails.default.url}
               alt={response[active].title}
-              data-id={response[active].id.videoId}
-              ref={(element) => {
-                this.element = element;
-              }}
-              onMouseEnter={() =>
-                showTooltip(this.element, response[active].title)
-              }
-              onMouseLeave={() => hideTooltip()}
             />
-          </td>
+          </div>
         )}
-      </tr>
+        {Array.isArray(response) && (
+          <div style={{ ...tableCell, ...attach }}>
+            <input
+              style={checkbox}
+              id={response[active].id.videoId}
+              type="checkbox"
+              defaultChecked={true}
+            />
+          </div>
+        )}
+      </div>
     );
   }
 }
