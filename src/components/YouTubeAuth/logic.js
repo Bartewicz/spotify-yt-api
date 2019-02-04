@@ -9,12 +9,11 @@ export const onSignInRequest = (self) => {
     })
       .then((GoogleUser) => {
         const basicProfile = GoogleUser.getBasicProfile();
-        self.setState({
-          user: {
-            id: basicProfile.getId(),
-            name: basicProfile.getName(),
-          },
-        });
+        const googleUser = {
+          id: basicProfile.getId(),
+          name: basicProfile.getName(),
+        };
+        self.props.returnUser(googleUser);
       })
       .then(() => self.setState({ isSignedIn: true }))
       .catch((error) => console.log(error));

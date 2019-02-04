@@ -8,7 +8,7 @@ const TopTracksList = ({ tracks }) =>
     .filter((track, i) => i < 3)
     .map((track, i) => (
       <li key={i} style={style.listElement}>
-        <span style={style.colorWhite}>
+        <span style={style.textWhite}>
           {(function() {
             let trackDescription = String(
               `${track.name} - ` +

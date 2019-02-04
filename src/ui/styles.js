@@ -134,13 +134,13 @@ export const activePlaylistCard = {
     flexFlow: "column nowrap",
     flex: 1,
     justifyContent: "center",
-    alignItems: "center",
+    alignItems: "stretch",
     minWidth: "260px",
     maxWidth: "1000px",
     marginBottom: "36px",
     padding: "20px",
     borderRadius: "20px",
-    color: "#888888",
+    color: "#888",
     transition: "opacity 0.3s ease-in-out",
   },
   titleWrapper: {
@@ -185,7 +185,7 @@ export const activePlaylistCard = {
     marginLeft: "20px",
   },
   sectionTitle: {
-    marginBottom: 0,
+    marginBottom: 3,
   },
   topTracksList: {
     marginBlockStart: "1.5em",
@@ -195,17 +195,22 @@ export const activePlaylistCard = {
   listElement: {
     lineHeight: "1.5",
   },
-  colorWhite: {
+  textWhite: {
     color: "#FFF",
+  },
+  textError: {
+    color: "red",
   },
   expandButton: {
     alignSelf: "flex-start",
-    backgroundColor: "transparent",
-    border: 0,
+    backgroundColor: "rgba(255,255,255,0.15)",
+    border: "2 solid white",
+    borderRadius: 5,
+    marginBottom: 5,
+    padding: 5,
     fontSize: "0.9rem",
     fontWeight: "bold",
     color: "#FFF",
-    padding: 0,
     cursor: "pointer",
   },
   tracksCounter: {
@@ -220,9 +225,47 @@ export const activePlaylistCard = {
   playlistList: {
     transition: "margin-top 0.3s ease-in-out",
   },
-  trackTitle: {
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
+  paginationButton: {
+    alignSelf: "center",
+    display: "flex",
+    justifyContent: "center",
+    width: "20px",
+    boxSizing: "border-box",
+    backgroundColor: "rgba(255,255,255,0.15)",
+    border: "1px solid #CCC",
+    borderRadius: 3,
+    fontSize: "0.9rem",
+    fontWeight: "bold",
+    color: "#CCC",
+    cursor: "pointer",
+  },
+  table: {
+    main: {
+      borderCollapse: "collapse",
+    },
+    row: {
+      borderBottom: "1px solid white",
+    },
+    cell: {
+      padding: "5px 5px 0 5px",
+      textAlign: "center",
+      wordWrap: "all",
+    },
+    title: {
+      color: "white",
+      textAlign: "left",
+      maxWidth: 480,
+    },
+    time: {
+      width: "50px",
+      color: "white",
+    },
+    ellipsis: {
+      marginBlockStart: 0,
+      marginBlockEnd: 0,
+      whiteSpace: "nowrap",
+      textOverflow: "ellipsis",
+      overflow: "hidden",
+    },
   },
 };

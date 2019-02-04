@@ -38,19 +38,22 @@ class YouTubeConnect extends React.Component {
   }
 
   render() {
+    const { isSignedIn, status, isGapiLoaded } = this.state;
+    const { user } = this.props;
+
     return (
       <div className={"text-center"}>
-        {this.state.isSignedIn ? (
+        {isSignedIn ? (
           <h4 style={style.userName}>
             <img style={style.icon} src={icon} alt={"youtube icon"} />
-            <span>{this.state.user.name}</span>
+            <span>{user.name}</span>
           </h4>
         ) : (
-          <h4>{this.state.status}</h4>
+          <h4>{status}</h4>
         )}
-        {this.state.isGapiLoaded ? (
+        {isGapiLoaded ? (
           <button style={style.btn} onClick={() => onSignInRequest(this)}>
-            {!this.state.isSignedIn ? "Connect YouTube" : "Sign Out"}
+            {!isSignedIn ? "Connect YouTube" : "Sign Out"}
           </button>
         ) : (
           <Spinner />
