@@ -1,10 +1,16 @@
 import React from "react";
+
 import { API_KEY, CLIENT_ID } from "../YouTubeAuth/credentials";
 import GeneralContent from "./GeneralContent";
 import PlaylistHolder from "./PlaylistHolder";
 import closeButton from "../../img/cancel-music.svg";
-import { activePlaylistCard as style } from "../../ui/styles";
 import Spinner from "../Spinner";
+import * as logic from "./logic";
+
+const SCOPE = "https://www.googleapis.com/auth/youtube.force-ssl";
+const DISCOVERY_DOCS = [
+  "https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest",
+];
 
 class StandalonePlaylist extends React.Component {
   constructor(props) {
@@ -18,12 +24,13 @@ class StandalonePlaylist extends React.Component {
     tracksData: null,
     youTubeDataResponses: [],
     isFullListVisible: false,
+    transferPending: false,
+    transferSuccesfull: false,
   };
 
   componentDidMount() {
     // opacity transition
     const { playlist } = this.props;
-
     const active = document.querySelector(".active");
     active.style.opacity = 1;
 
@@ -33,25 +40,22 @@ class StandalonePlaylist extends React.Component {
     })
       .then((response) => response.json())
       .then((tracksData) => {
-        console.log("tracksData", tracksData);
-        this.manageTracksData(tracksData);
+        logic.manageTracksData(this, tracksData);
         this.setState({ total: tracksData.total });
       })
       .catch((error) => console.log(error));
   }
 
   componentDidUpdate = () => {
-    const {tracksData, total} = this.state;
+    const { tracksData, total } = this.state;
     if (tracksData.length === total) {
       Promise.all([
         window.gapi.load("client", function() {
           window.gapi.client.init({
             apiKey: API_KEY,
             clientId: CLIENT_ID,
-            scope: "https://www.googleapis.com/auth/youtube.force-ssl",
-            discoveryDocs: [
-              "https://www.googleapis.com/discovery/v1/apis/youtube/v3/rest",
-            ],
+            scope: SCOPE,
+            discoveryDocs: DISCOVERY_DOCS,
           });
         }),
       ]).catch((error) => {
@@ -60,86 +64,31 @@ class StandalonePlaylist extends React.Component {
     }
   };
 
-  manageTracksData = (tracksData) => {
-    const tracksDataItems =
-      this.state.tracksData === null
-        ? tracksData.items
-        : this.state.tracksData.concat(tracksData.items);
-    this.setState({ tracksData: tracksDataItems }, () => {
-      const { next } = tracksData;
-      console.log("manage tracks data, next:", Boolean(next));
-      if (next) {
-        console.log("fetch next tracks data");
-        fetch(next, { headers: this.headers })
-          .then((response) => response.json())
-          .then((nextTracksData) => {
-            this.manageTracksData(nextTracksData);
-          });
-      }
-    });
-  };
-
-  toggleTrackListVisible = (isFullListVisible) => {
-    this.setState({ isFullListVisible }, () => {
-      const playlistList = document.querySelector(".playlist-list");
-      const playlistHolder = document.querySelector(".playlist-holder");
-      console.log("playlistHolder.offsetWidth", playlistHolder.offsetWidth);
-      if (this.state.isFullListVisible) {
-        playlistHolder.style.height = "auto";
-        playlistList.style.marginTop = 0;
-      } else {
-        playlistList.style.marginTop = `${-playlistList.offsetHeight - 32}px`;
-        setTimeout(() => (playlistHolder.style.height = 0), 300);
-      }
-    });
-  };
-
-  handleTransferRequest = (self) => {
-    const { tracksData } = this.state;
-    if (Array.isArray(tracksData)) {
-      const promises = tracksData.map(
-        (item) =>
-          new Promise((resolve) => {
-            console.log("item", item);
-            let trackName =
-              `${item.track.name} - ` + item.track.artists[0].name;
-            let request = window.gapi.client.youtube.search.list({
-              q: trackName,
-              maxResults: 10,
-              order: "relevance",
-              part: "snippet",
-              type: "video",
-              videoCaption: "any",
-            });
-            request.execute(function(response) {
-              console.log("response", response);
-              const trackResponseItems = response.items;
-              resolve(trackResponseItems);
-            });
-          })
-      );
-      Promise.all(promises).then((responses) => {
-        console.log("responses", responses);
-        self.setState({ youTubeDataResponses: responses });
-      });
-    }
-  };
-
   render() {
-    const { tracksData, youTubeDataResponses, isFullListVisible } = this.state;
+    const {
+      tracksData,
+      youTubeDataResponses,
+      isFullListVisible,
+      transferPending,
+      transferSuccesfull,
+    } = this.state;
     const { playlist, playlistOverview, googleUser } = this.props;
 
-    console.log("tracksData", tracksData);
-    console.log("youTubeDataResponses", youTubeDataResponses);
+    const {
+      wrapper,
+      titleWrapper,
+      title,
+      closeButton: closeButtonStyle,
+    } = styles;
 
     return (
-      <div className={"active"} style={style.wrapper}>
+      <div className={"active"} style={wrapper}>
         {(tracksData && (
           <div>
-            <div style={style.titleWrapper}>
-              <h3 style={style.title}>{playlist.name}</h3>
+            <div style={titleWrapper}>
+              <h3 style={title}>{playlist.name}</h3>
               <img
-                style={style.closeButton}
+                style={closeButtonStyle}
                 onClick={playlistOverview}
                 src={closeButton}
                 alt={"icon more"}
@@ -148,10 +97,16 @@ class StandalonePlaylist extends React.Component {
             <GeneralContent
               playlist={playlist}
               tracksData={tracksData}
-              toggleTrackList={this.toggleTrackListVisible}
+              toggleTrackList={(bool) =>
+                logic.toggleTrackListVisible(this, bool)
+              }
               isFullListVisible={isFullListVisible}
               googleUser={googleUser}
-              handleTransferRequest={() => this.handleTransferRequest(this)}
+              handleTransferRequest={() => logic.handleTransferRequest(this)}
+              handleTransferInit={() => logic.onTransferInit(this)}
+              youTubeResponses={youTubeDataResponses}
+              transferPending={transferPending}
+              transferSuccesfull={transferSuccesfull}
             />
             <PlaylistHolder
               tracksData={tracksData}
@@ -165,3 +120,40 @@ class StandalonePlaylist extends React.Component {
 }
 
 export default StandalonePlaylist;
+
+const styles = {
+  wrapper: {
+    opacity: 0,
+    backgroundColor: "#102433",
+    boxSizing: "border-box",
+    display: "flex",
+    flexFlow: "column nowrap",
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "stretch",
+    minWidth: "260px",
+    maxWidth: "1000px",
+    marginBottom: "36px",
+    padding: "20px",
+    borderRadius: "20px",
+    color: "#888",
+    transition: "opacity 0.3s ease-in-out",
+  },
+  titleWrapper: {
+    display: "flex",
+    justifyContent: "space-between",
+    marginBottom: "15px",
+  },
+  title: {
+    width: "100%",
+    color: "white",
+    fontSize: "1rem",
+    textAlign: "center",
+  },
+  closeButton: {
+    width: "25px",
+    cursor: "pointer",
+    margin: "10px 0 0 10px",
+    alignSelf: "flex-start",
+  },
+};

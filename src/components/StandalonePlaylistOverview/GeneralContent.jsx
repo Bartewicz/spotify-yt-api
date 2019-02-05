@@ -1,6 +1,7 @@
 import React from "react";
+
 import TopTracksList from "./TopTracksList";
-import { activePlaylistCard as style } from "../../ui/styles";
+import Spinner from "../Spinner";
 
 const GeneralContent = ({
   playlist,
@@ -9,48 +10,132 @@ const GeneralContent = ({
   isFullListVisible,
   googleUser,
   handleTransferRequest,
-}) => (
-  <div style={style.contentWrapper}>
-    <img
-      style={style.coverImage}
-      src={playlist.images[0].url}
-      alt={"playlist's cover"}
-    />
-    <div style={style.detailsSection}>
-      <h4 style={style.sectionTitle}>{"Most popular tracks:"}</h4>
-      <ol style={style.topTracksList}>
-        {<TopTracksList tracks={tracksData} />}
-      </ol>
-      <button
-        style={style.expandButton}
-        onClick={() => toggleTrackList(!isFullListVisible)}
-      >
-        {!isFullListVisible ? "See all..." : "Hide..."}
-      </button>
-      {!googleUser ? (
-        <span style={style.textError}>Connect your YT account</span>
-      ) : (
+  handleTransferInit,
+  youTubeResponses,
+  transferPending,
+  transferSuccesfull,
+}) => {
+  const {
+    contentWrapper,
+    coverImage,
+    detailsSection,
+    topTracksList,
+    sectionTitle,
+    expandButton,
+    textError,
+    tracksCounter,
+  } = styles;
+
+  return (
+    <div style={contentWrapper}>
+      <img
+        style={coverImage}
+        src={playlist.images[0].url}
+        alt={"playlist's cover"}
+      />
+      <div style={detailsSection}>
+        <h4 style={sectionTitle}>{"Most popular tracks:"}</h4>
+        <ol style={topTracksList}>
+          <TopTracksList tracks={tracksData} />
+        </ol>
         <button
-          style={style.expandButton}
-          onClick={() => {
-            toggleTrackList(true);
-            handleTransferRequest();
-          }}
-          disabled={Array.isArray(tracksData) && googleUser ? false : true}
+          style={expandButton}
+          onClick={() => toggleTrackList()}
         >
-          Init transfer
+          {!isFullListVisible ? "See all..." : "Hide..."}
         </button>
-      )}
-    </div>
-    <div style={style.detailsSection}>
-      <div>
-        <h4 style={style.sectionTitle}>
-          {"Total tracks: "}
-          <span style={style.tracksCounter}>{playlist.tracks.total}</span>
-        </h4>
+        {transferSuccesfull ? (
+          "Playlist trasfer successfull!"
+        ) : transferPending ? (
+          <Spinner />
+        ) : !googleUser ? (
+          <span style={textError}>Connect your YT account</span>
+        ) : youTubeResponses.length ? (
+          <button
+            style={{ ...expandButton, backgroundColor: "red" }}
+            onClick={() => {
+              handleTransferRequest();
+            }}
+          >
+            Transfer now!
+          </button>
+        ) : (
+          <button
+            style={expandButton}
+            onClick={() => {
+              toggleTrackList(true);
+              handleTransferInit();
+            }}
+          >
+            Init transfer
+          </button>
+        )}
+      </div>
+      <div style={detailsSection}>
+        <div>
+          <h4 style={sectionTitle}>
+            {"Total tracks: "}
+            <span style={tracksCounter}>{playlist.tracks.total}</span>
+          </h4>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default GeneralContent;
+
+const styles = {
+  contentWrapper: {
+    paddingTop: "20px",
+    paddingBottom: "20px",
+    boxSizing: "padding-box",
+    borderTop: "1px solid rgba(255, 255, 255, 0.5)",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.5)",
+    width: "100%",
+    display: "flex",
+    flexFlow: "row wrap",
+    justifyContent: "space-around",
+    alignItems: "center",
+  },
+  coverImage: {
+    height: "200px",
+    width: "200px",
+    margin: "1.33em 0",
+    objectFit: "cover",
+  },
+  detailsSection: {
+    display: "flex",
+    flexFlow: "column nowrap",
+    alignSelf: "flex-start",
+    marginLeft: "20px",
+  },
+  sectionTitle: {
+    marginBottom: 3,
+  },
+  topTracksList: {
+    marginBlockStart: "1.5em",
+    marginBlockEnd: "1.5em",
+    paddingInlineStart: "1rem",
+  },
+  textError: {
+    color: "red",
+  },
+  expandButton: {
+    alignSelf: "flex-start",
+    backgroundColor: "rgba(255,255,255,0.15)",
+    border: "2 solid white",
+    borderRadius: 5,
+    marginBottom: 5,
+    padding: 5,
+    fontSize: "0.9rem",
+    fontWeight: "bold",
+    color: "#FFF",
+    cursor: "pointer",
+  },
+  tracksCounter: {
+    marginLeft: "10px",
+    color: "white",
+    fontWeight: "bold",
+  },
+};

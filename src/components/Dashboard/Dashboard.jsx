@@ -1,8 +1,8 @@
 import React from "react";
+
 import YouTubeConnect from "../YouTubeAuth";
 import PlaylistCard from "../PlaylistCard";
 import StandalonePlaylistOverview from "../StandalonePlaylistOverview";
-import { dashboard as style } from "../../ui/styles";
 import Spinner from "../Spinner";
 
 class Dashboard extends React.Component {
@@ -72,6 +72,8 @@ class Dashboard extends React.Component {
     const { spotifyUser, googleUser, playlists, activeCard } = this.state;
     const { accessToken } = this.props;
 
+    const { wrapper, avatarWrapper, avatar, playlistsWrapper } = styles;
+
     return (
       <div>
         {(!spotifyUser && (
@@ -79,13 +81,13 @@ class Dashboard extends React.Component {
             <Spinner />
           </div>
         )) || (
-          <div style={style.wrapper}>
+          <div style={wrapper}>
             <h1 className={"text-center"}>{`Welcome, ${
               spotifyUser.display_name
             }`}</h1>
-            <div style={style.avatarWrapper}>
+            <div style={avatarWrapper}>
               <img
-                style={style.avatar}
+                style={avatar}
                 src={spotifyUser.images[0].url}
                 alt={"user's avatar"}
               />
@@ -97,15 +99,12 @@ class Dashboard extends React.Component {
             <h2 className={"text-center"}>
               {"Manage your Spotify playlists:"}
             </h2>
-            <div
-              style={style.playlistsWrapper}
-              className={"playlists-wrapper"}
-            >
+            <div style={playlistsWrapper} className={"playlists-wrapper"}>
               {playlists ? (
                 playlists.hasOwnProperty("items") ? (
                   typeof activeCard === "number" ? (
                     playlists.items
-                      .filter((playlist, i) => activeCard === i)
+                      .filter((p, i) => activeCard === i)
                       .map((playlist, i) => (
                         <StandalonePlaylistOverview
                           key={i}
@@ -142,3 +141,31 @@ class Dashboard extends React.Component {
 }
 
 export default Dashboard;
+
+const styles = {
+  wrapper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    margin: "0 auto",
+  },
+  avatarWrapper: {
+    borderRadius: "100%",
+    height: "100px",
+    width: "100px",
+    overflow: "hidden",
+    border: "10px solid #102433",
+  },
+  avatar: {
+    height: "100%",
+    width: "100%",
+    objectFit: "cover",
+  },
+  playlistsWrapper: {
+    display: "flex",
+    flexFlow: "row wrap",
+    flexGrow: 1,
+    justifyContent: "center",
+    transition: "height 0.3s ease-in-out 0.15s",
+  },
+};

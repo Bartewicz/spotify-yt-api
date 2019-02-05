@@ -1,11 +1,12 @@
 import React from "react";
+
 import { onSignInRequest } from "./logic";
 import { CLIENT_ID } from "./credentials";
-import icon from "../../img/youtube.png";
-import { youTubeAuth as style } from "../../ui/styles";
+import Icon from "../../img/youtube.png";
 import Spinner from "../Spinner";
 
 const SCOPES = `https://www.googleapis.com/auth/youtube.force-ssl`;
+const SRCIPT_SRC = `https://apis.google.com/js/api.js?onload=gapiAuthInit`;
 
 class YouTubeConnect extends React.Component {
   state = {
@@ -30,7 +31,7 @@ class YouTubeConnect extends React.Component {
           .catch((error) => console.log(error));
       });
     };
-    gapiScript.src = `https://apis.google.com/js/api.js?onload=gapiAuthInit`;
+    gapiScript.src = SRCIPT_SRC;
     document.body.appendChild(gapiScript);
     Promise.all([window.gapiAuthInit]).then(() =>
       this.setState({ isGapiLoaded: true })
@@ -41,18 +42,20 @@ class YouTubeConnect extends React.Component {
     const { isSignedIn, status, isGapiLoaded } = this.state;
     const { user } = this.props;
 
+    const { userName, icon: iconStyle, btn } = styles;
+
     return (
       <div className={"text-center"}>
         {isSignedIn ? (
-          <h4 style={style.userName}>
-            <img style={style.icon} src={icon} alt={"youtube icon"} />
+          <h4 style={userName}>
+            <img style={iconStyle} src={Icon} alt={"youtube icon"} />
             <span>{user.name}</span>
           </h4>
         ) : (
           <h4>{status}</h4>
         )}
         {isGapiLoaded ? (
-          <button style={style.btn} onClick={() => onSignInRequest(this)}>
+          <button style={btn} onClick={() => onSignInRequest(this)}>
             {!isSignedIn ? "Connect YouTube" : "Sign Out"}
           </button>
         ) : (
@@ -64,3 +67,25 @@ class YouTubeConnect extends React.Component {
 }
 
 export default YouTubeConnect;
+
+const styles = {
+  userName: {
+    display: "flex",
+    flexFlow: "row nowrap",
+    alignItems: "center",
+  },
+  icon: {
+    display: "inline",
+    height: "16px",
+    marginRight: "5px",
+  },
+  btn: {
+    cursor: "pointer",
+    padding: "10px",
+    borderRadius: "10px",
+    border: 0,
+    backgroundColor: "#f00",
+    color: "#fff",
+    fontWeight: "bold",
+  },
+};

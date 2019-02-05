@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { activePlaylistCard as style } from "../../ui/styles";
 import moment from "moment";
 
 export default class PlaylistListRow extends Component {
@@ -56,7 +55,7 @@ export default class PlaylistListRow extends Component {
       cover,
       attach,
       checkbox,
-    } = style;
+    } = styles;
 
     return (
       <div style={tableRow}>
@@ -115,3 +114,74 @@ export default class PlaylistListRow extends Component {
     );
   }
 }
+
+const styles = {
+  tableRow: {
+    display: "flex",
+    flexDirection: "row",
+    flexGrow: 1,
+    padding: "5px",
+    boxSizing: "border-box",
+    borderBottom: "1px solid rgba(255, 255, 255, 0.5)",
+  },
+  tableCell: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    textAlign: "center",
+    color: "white",
+    wordWrap: "all",
+  },
+  position: {
+    width: 20,
+  },
+  trackTitle: {
+    flex: 3,
+  },
+  paginationButton: {
+    alignSelf: "center",
+    display: "flex",
+    justifyContent: "center",
+    width: "20px",
+    boxSizing: "border-box",
+    backgroundColor: "rgba(255,255,255,0.15)",
+    border: "1px solid #CCC",
+    borderRadius: 3,
+    fontSize: "0.9rem",
+    fontWeight: "bold",
+    color: "#CCC",
+    cursor: "pointer",
+  },
+  responseTitleSection: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    fontSize: "0.8rem",
+    color: "#888",
+    paddingTop: 2,
+    paddingRight: 5,
+    paddingLeft: 5,
+  },
+  responseTitle: {
+    fontSize: "0.9rem",
+    color: "#CCC",
+    fontWeight: "normal",
+  },
+  artist: {
+    flex: 1,
+  },
+  time: {
+    width: 70,
+  },
+  cover: {
+    width: 130,
+  },
+  attach: {
+    width: 60,
+  },
+  checkbox: {
+    width: 20,
+    height: 20,
+  },
+};

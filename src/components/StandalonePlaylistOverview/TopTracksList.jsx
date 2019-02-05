@@ -1,14 +1,15 @@
 import React from "react";
-import { activePlaylistCard as style } from "../../ui/styles";
 
-const TopTracksList = ({ tracks }) =>
-  tracks
+const TopTracksList = ({ tracks }) => {
+  const { listElement, textWhite } = styles;
+
+  return tracks
     .map((trackData) => trackData.track)
     .sort((a, b) => b.popularity - a.popularity)
     .filter((track, i) => i < 3)
     .map((track, i) => (
-      <li key={i} style={style.listElement}>
-        <span style={style.textWhite}>
+      <li key={i} style={listElement}>
+        <span style={textWhite}>
           {(function() {
             let trackDescription = String(
               `${track.name} - ` +
@@ -23,5 +24,15 @@ const TopTracksList = ({ tracks }) =>
         </span>
       </li>
     ));
+};
 
 export default TopTracksList;
+
+const styles = {
+  listElement: {
+    lineHeight: "1.5",
+  },
+  textWhite: {
+    color: "#FFF",
+  },
+};
