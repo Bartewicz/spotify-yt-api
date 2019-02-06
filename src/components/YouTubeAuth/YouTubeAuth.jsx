@@ -13,7 +13,6 @@ class YouTubeConnect extends React.Component {
     isGapiLoaded: false,
     isSignedIn: false,
     status: "Log in to your Google account:",
-    uesr: null,
   };
 
   componentDidMount() {

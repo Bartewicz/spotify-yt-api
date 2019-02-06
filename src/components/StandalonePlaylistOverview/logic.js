@@ -60,6 +60,7 @@ export const onTransferInit = (self) => {
 export const handleTransferRequest = (self) => {
   const fetchPlaylistId = new Promise((resolve) => {
     let playlistId;
+
     window.gapi.client.load("youtube", "v3", () => {
       const request = window.gapi.client.youtube.playlists.insert({
         part: "snippet,status",
@@ -72,6 +73,7 @@ export const handleTransferRequest = (self) => {
           },
         },
       });
+
       request.execute(function(response) {
         const { result } = response;
         if (result) {
@@ -84,12 +86,15 @@ export const handleTransferRequest = (self) => {
       });
     });
   });
-  self.setState({ transferPending: true }, () =>
+  const ids = Array.from(document.querySelectorAll("input:checked")).map(
+    (el) => el.id
+  );
+  self.setState({ transferPending: true, tracksToInsert: ids.length }, () =>
     Promise.all([fetchPlaylistId])
-      .then((playlistId) => {
-        Array.from(document.querySelectorAll("input:checked"))
-          .map((el) => el.id)
-          .forEach((id, i) => {
+      .then(async (playlistId) => {
+        for (let i = 0; i < ids.length; i++) {
+          await new Promise((resolve) => {
+            const id = ids[i];
             const details = {
               videoId: id,
               kind: "youtube#video",
@@ -103,17 +108,20 @@ export const handleTransferRequest = (self) => {
                 },
               },
             });
-            setTimeout(
-              () =>
-                request.execute(function(response) {
-                  console.log("response", response);
-                }),
-              i * 100
-            );
+            request.execute(function(response) {
+              self.setState((prevState) => ({
+                counter: prevState.counter + 1,
+              }));
+              resolve();
+            });
           });
+        }
       })
       .then(() => {
         onTransferEnd(self);
+      })
+      .catch((error) => {
+        console.error(error);
       })
   );
 };

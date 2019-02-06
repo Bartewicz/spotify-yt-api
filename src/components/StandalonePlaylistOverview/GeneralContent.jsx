@@ -14,6 +14,8 @@ const GeneralContent = ({
   youTubeResponses,
   transferPending,
   transferSuccesfull,
+  tracksToInsert,
+  counter,
 }) => {
   const {
     contentWrapper,
@@ -38,16 +40,18 @@ const GeneralContent = ({
         <ol style={topTracksList}>
           <TopTracksList tracks={tracksData} />
         </ol>
-        <button
-          style={expandButton}
-          onClick={() => toggleTrackList()}
-        >
+        <button style={expandButton} onClick={() => toggleTrackList()}>
           {!isFullListVisible ? "See all..." : "Hide..."}
         </button>
         {transferSuccesfull ? (
-          "Playlist trasfer successfull!"
+          <p style={{ color: "#1db954" }}>Playlist transfer successfull!</p>
         ) : transferPending ? (
-          <Spinner />
+          <div style={{ display: "flex", flexWrap: "nowrap" }}>
+            <p
+              style={{ marginRight: 20 }}
+            >{`Transfered ${counter} / ${tracksToInsert}`}</p>
+            <Spinner />
+          </div>
         ) : !googleUser ? (
           <span style={textError}>Connect your YT account</span>
         ) : youTubeResponses.length ? (

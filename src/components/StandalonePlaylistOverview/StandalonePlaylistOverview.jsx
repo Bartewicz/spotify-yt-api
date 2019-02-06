@@ -26,6 +26,8 @@ class StandalonePlaylist extends React.Component {
     isFullListVisible: false,
     transferPending: false,
     transferSuccesfull: false,
+    tracksToInsert: 0,
+    counter: 0,
   };
 
   componentDidMount() {
@@ -71,6 +73,8 @@ class StandalonePlaylist extends React.Component {
       isFullListVisible,
       transferPending,
       transferSuccesfull,
+      tracksToInsert,
+      counter,
     } = this.state;
     const { playlist, playlistOverview, googleUser } = this.props;
 
@@ -107,6 +111,8 @@ class StandalonePlaylist extends React.Component {
               youTubeResponses={youTubeDataResponses}
               transferPending={transferPending}
               transferSuccesfull={transferSuccesfull}
+              tracksToInsert={tracksToInsert}
+              counter={counter}
             />
             <PlaylistHolder
               tracksData={tracksData}
